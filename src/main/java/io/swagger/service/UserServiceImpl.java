@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -21,9 +22,10 @@ public class UserServiceImpl implements UserService {
     public SearchUserInfoResponse getUsers(String codiceFiscale, Integer page, Integer size) throws IOException {
         SearchUserInfoResponse searchUserInfoResponse = objectMapper.readValue(MockedData.usersMockedData, SearchUserInfoResponse.class);
         if(codiceFiscale != null){
-            for (SearchUserInfoGetObject searchUserInfoGetObject: searchUserInfoResponse.getResults()){
-                if(!searchUserInfoGetObject.getFiscalNumber().equalsIgnoreCase(codiceFiscale)){
-                    searchUserInfoResponse.getResults().remove(searchUserInfoGetObject);
+            for (Iterator<SearchUserInfoGetObject> iterator = searchUserInfoResponse.getResults().iterator(); iterator.hasNext();) {
+                SearchUserInfoGetObject user = iterator.next();
+                if(!user.getFiscalNumber().equalsIgnoreCase(codiceFiscale)){
+                    iterator.remove();
                 }
             }
         }
