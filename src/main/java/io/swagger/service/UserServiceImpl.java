@@ -3,6 +3,7 @@ package io.swagger.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.SearchUserInfoGetObject;
 import io.swagger.model.SearchUserInfoResponse;
+import io.swagger.model.UserInfoGetObject;
 import io.swagger.util.MockedData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,15 @@ public class UserServiceImpl implements UserService {
     private ObjectMapper objectMapper;
 
     @Override
-    public SearchUserInfoResponse getUsers(Integer page, Integer size) throws IOException {
+    public SearchUserInfoResponse getUsers(String codiceFiscale, Integer page, Integer size) throws IOException {
         SearchUserInfoResponse searchUserInfoResponse = objectMapper.readValue(MockedData.usersMockedData, SearchUserInfoResponse.class);
+        if(codiceFiscale != null){
+            for (SearchUserInfoGetObject searchUserInfoGetObject: searchUserInfoResponse.getResults()){
+                if(!searchUserInfoGetObject.getFiscalNumber().equalsIgnoreCase(codiceFiscale)){
+                    searchUserInfoResponse.getResults().remove(searchUserInfoGetObject);
+                }
+            }
+        }
         if(page != null && size != null) {
             List<SearchUserInfoGetObject> searchUserInfoGetObjectList = searchUserInfoResponse.getResults();
             int listSize = searchUserInfoGetObjectList.size();
@@ -30,4 +38,5 @@ public class UserServiceImpl implements UserService {
         }
         return searchUserInfoResponse;
     }
+
 }

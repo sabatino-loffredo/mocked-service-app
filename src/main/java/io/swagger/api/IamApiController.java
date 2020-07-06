@@ -66,8 +66,8 @@ public class IamApiController implements IamApi {
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                SearchUserInfoResponse searchUserInfoResponse = userService.getUsers(page, size);
+            try {//Utilizzo em come codice Fiscale
+                SearchUserInfoResponse searchUserInfoResponse = userService.getUsers(em, page, size);
                 return new ResponseEntity<SearchUserInfoResponse>(searchUserInfoResponse, HttpStatus.OK);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
