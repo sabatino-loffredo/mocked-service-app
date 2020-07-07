@@ -19,8 +19,8 @@ public class JsonUtil {
 
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/mockedData.json"));) {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(cl.getResourceAsStream("mockedData.json")))) {
 
             //Read JSON file
             Object obj = jsonParser.parse(reader);
