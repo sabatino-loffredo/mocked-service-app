@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.SearchUserInfoGetObject;
 import io.swagger.model.SearchUserInfoResponse;
 import io.swagger.model.UserInfoGetObject;
+import io.swagger.model.UserRegistrationObject;
+import io.swagger.util.JsonUtil;
 import io.swagger.util.MockedData;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +22,9 @@ public class UserServiceImpl implements UserService {
     private ObjectMapper objectMapper;
 
     @Override
-    public SearchUserInfoResponse getUsers(String codiceFiscale, Integer page, Integer size) throws IOException {
-        SearchUserInfoResponse searchUserInfoResponse = objectMapper.readValue(MockedData.usersMockedData, SearchUserInfoResponse.class);
+    public SearchUserInfoResponse getUsers(String codiceFiscale, Integer page, Integer size) throws IOException, ParseException {
+        SearchUserInfoResponse searchUserInfoResponse = JsonUtil.readMockData();
+
         if(codiceFiscale != null){
             for (Iterator<SearchUserInfoGetObject> iterator = searchUserInfoResponse.getResults().iterator(); iterator.hasNext();) {
                 SearchUserInfoGetObject user = iterator.next();
@@ -41,4 +45,8 @@ public class UserServiceImpl implements UserService {
         return searchUserInfoResponse;
     }
 
+    @Override
+    public void createUser(UserRegistrationObject userRegistrationObject) throws IOException, ParseException {
+        JsonUtil.writeMockData(userRegistrationObject);
+    }
 }

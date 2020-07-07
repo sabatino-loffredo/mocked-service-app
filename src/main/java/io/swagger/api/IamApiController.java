@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.*;
 import io.swagger.service.UserService;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class IamApiController implements IamApi {
             try {//Utilizzo em come codice Fiscale
                 SearchUserInfoResponse searchUserInfoResponse = userService.getUsers(em, page, size);
                 return new ResponseEntity<SearchUserInfoResponse>(searchUserInfoResponse, HttpStatus.OK);
-            } catch (IOException e) {
+            } catch (IOException | ParseException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<SearchUserInfoResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -87,6 +88,15 @@ public class IamApiController implements IamApi {
     public ResponseEntity<Void> postCreateUser(@ApiParam(value = "Parametri necessari per la creazione dell'utente" ,required=true )  @Valid @RequestBody UserRegistrationObject body
 ) {
         String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                userService.createUser(body);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (IOException | ParseException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
