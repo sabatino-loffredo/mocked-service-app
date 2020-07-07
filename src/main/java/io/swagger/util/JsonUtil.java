@@ -16,12 +16,11 @@ import java.util.List;
 public class JsonUtil {
 
     public static SearchUserInfoResponse readMockData() {
+
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
 
-        File f = new File("mockedData.json");
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(f.getAbsolutePath()));) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/mockedData.json"));) {
 
             //Read JSON file
             Object obj = jsonParser.parse(reader);
