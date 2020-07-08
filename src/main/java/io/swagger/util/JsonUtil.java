@@ -133,9 +133,9 @@ public class JsonUtil {
 
         InputStream input = resource.getInputStream();
 
-        File file = resource.getFile();
+        File f = resource.getFile();
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
+        BufferedReader reader = new BufferedReader(new FileReader(f));
 
         //Read JSON file
         Object obj = jsonParser.parse(reader);
