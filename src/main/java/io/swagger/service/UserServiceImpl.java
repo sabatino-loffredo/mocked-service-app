@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SearchUserInfoResponse getUsers(String codiceFiscale, Integer page, Integer size) throws IOException, ParseException {
-        //SearchUserInfoResponse searchUserInfoResponse = JsonUtil.readMockData();
+        SearchUserInfoResponse searchUserInfoResponse = JsonUtil.readMockData();
 
-        SearchUserInfoResponse searchUserInfoResponse = objectMapper.readValue(MockedData.usersMockedData, SearchUserInfoResponse.class);
+        //SearchUserInfoResponse searchUserInfoResponse = objectMapper.readValue(MockedData.usersMockedData, SearchUserInfoResponse.class);
 
         if(codiceFiscale != null){
             for (Iterator<SearchUserInfoGetObject> iterator = searchUserInfoResponse.getResults().iterator(); iterator.hasNext();) {
