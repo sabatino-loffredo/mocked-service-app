@@ -19,8 +19,8 @@ public class JsonUtil {
 
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(cl.getResourceAsStream("mockedData.json")))) {
+        File f = new File("target/classes/mockedData.json");
+        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
 
             //Read JSON file
             Object obj = jsonParser.parse(reader);
@@ -121,9 +121,9 @@ public class JsonUtil {
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
 
-        File f = new File("mockedData.json");
+        File f = new File("target/classes/mockedData.json");
 
-        BufferedReader reader = new BufferedReader(new FileReader(f.getAbsolutePath()));
+        BufferedReader reader = new BufferedReader(new FileReader(f));
 
         //Read JSON file
         Object obj = jsonParser.parse(reader);
