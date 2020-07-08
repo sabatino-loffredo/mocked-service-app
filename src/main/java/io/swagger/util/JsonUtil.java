@@ -8,6 +8,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,12 +17,18 @@ import java.util.List;
 
 public class JsonUtil {
 
-    public static SearchUserInfoResponse readMockData() {
+    public static SearchUserInfoResponse readMockData() throws IOException {
 
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
-        File f = new File("target/classes/mockedData.json");
-        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+
+        Resource resource = new ClassPathResource("mockedData.json");
+
+        InputStream input = resource.getInputStream();
+
+        File file = resource.getFile();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
             //Read JSON file
             Object obj = jsonParser.parse(reader);
@@ -121,9 +129,13 @@ public class JsonUtil {
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
 
-        File f = new File("target/classes/mockedData.json");
+        Resource resource = new ClassPathResource("mockedData.json");
 
-        BufferedReader reader = new BufferedReader(new FileReader(f));
+        InputStream input = resource.getInputStream();
+
+        File file = resource.getFile();
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
 
         //Read JSON file
         Object obj = jsonParser.parse(reader);
