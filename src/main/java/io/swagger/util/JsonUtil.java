@@ -22,11 +22,9 @@ public class JsonUtil {
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
 
-        Resource resource = new ClassPathResource("/tmp/mockedData.json");
+        File f = new File("/tmp/mockedData.json");
 
-        File file = resource.getFile();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
 
             //Read JSON file
             Object obj = jsonParser.parse(reader);
@@ -127,9 +125,7 @@ public class JsonUtil {
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
 
-        Resource resource = new ClassPathResource("/tmp/mockedData.json");
-
-        File f = resource.getFile();
+        File f = new File("/tmp/mockedData.json");
 
         System.out.println(f.getAbsolutePath());
         BufferedReader reader = new BufferedReader(new FileReader(f));
