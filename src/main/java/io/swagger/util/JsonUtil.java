@@ -133,8 +133,10 @@ public class JsonUtil {
 
         InputStream input = resource.getInputStream();
 
+
         File f = resource.getFile();
 
+        System.out.println(f.getAbsolutePath());
         BufferedReader reader = new BufferedReader(new FileReader(f));
 
         //Read JSON file
