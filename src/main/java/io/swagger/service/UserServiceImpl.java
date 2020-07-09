@@ -1,10 +1,7 @@
 package io.swagger.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.model.SearchUserInfoGetObject;
-import io.swagger.model.SearchUserInfoResponse;
-import io.swagger.model.UserInfoGetObject;
-import io.swagger.model.UserRegistrationObject;
+import io.swagger.model.*;
 import io.swagger.util.JsonUtil;
 import io.swagger.util.MockedData;
 import org.json.simple.parser.ParseException;
@@ -50,5 +47,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserRegistrationObject userRegistrationObject) throws IOException, ParseException {
         JsonUtil.writeMockData(userRegistrationObject);
+    }
+
+    @Override
+    public void updateUser(String username, UserInfoPutObject userInfoPutObject) throws IOException, ParseException {
+        JsonUtil.updateSingleMockData(username, userInfoPutObject);
     }
 }

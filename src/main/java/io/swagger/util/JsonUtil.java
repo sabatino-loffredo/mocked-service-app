@@ -1,15 +1,10 @@
 package io.swagger.util;
 
-import io.swagger.model.AdditionalClaim;
-import io.swagger.model.SearchUserInfoGetObject;
-import io.swagger.model.SearchUserInfoResponse;
-import io.swagger.model.UserRegistrationObject;
+import io.swagger.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -150,6 +145,60 @@ public class JsonUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void updateSingleMockData(String username, UserInfoPutObject userInfoPutObject) throws IOException, ParseException {
+
+        //JSON parser object to parse read file
+        JSONParser jsonParser = new JSONParser();
+
+        File f = new File("/tmp/mockedData.json");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray listJson = ((JSONArray) ((JSONObject) obj).get("results"));
+            System.out.println(listJson);
+
+            listJson.forEach(emp -> {
+
+                JSONObject jsonObject = (JSONObject) emp;
+                String usernameJson = (String) jsonObject.get("username");
+                if (username.equalsIgnoreCase(usernameJson)) {
+                    jsonObject.replace("email", userInfoPutObject.getEmail());
+                    jsonObject.replace("phone_number", userInfoPutObject.getPhoneNumber());
+                    jsonObject.replace("given_name", userInfoPutObject.getGivenName());
+                    jsonObject.replace("family_name", userInfoPutObject.getFamilyName());
+                    //Creating claims
+                    JSONArray claims = new JSONArray();
+                    userInfoPutObject.getAdditionalClaims().forEach(additionalClaim -> {
+                        JSONObject claim = new JSONObject();
+                        claim.put("uri", additionalClaim.getUri());
+                        claim.put("value", additionalClaim.getValue());
+                        claims.add(claim);
+                    });
+
+                    jsonObject.replace("additional_claims", claims);
+                }
+
+            });
+
+            JSONObject json = new JSONObject();
+            json.put("pages", -1);
+            //add user
+            json.put("results", listJson);
+
+            FileWriter file = new FileWriter(f);
+            file.write(json.toJSONString());
+            file.flush();
+
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }
