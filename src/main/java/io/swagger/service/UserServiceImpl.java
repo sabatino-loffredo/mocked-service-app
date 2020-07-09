@@ -27,12 +27,12 @@ public class UserServiceImpl implements UserService {
         //SearchUserInfoResponse searchUserInfoResponse = objectMapper.readValue(MockedData.usersMockedData, SearchUserInfoResponse.class);
 
         if (codiceFiscale != null) {
-            searchUserInfoResponse.getResults().stream()
-                    .filter(item -> item.getFiscalNumber().equalsIgnoreCase(codiceFiscale)).collect(Collectors.toList());
+            searchUserInfoResponse.setResults(searchUserInfoResponse.getResults().stream()
+                    .filter(item -> item.getFiscalNumber().equalsIgnoreCase(codiceFiscale)).collect(Collectors.toList()));
         }
         if (username != null) {
-            searchUserInfoResponse.getResults().stream()
-                    .filter(item -> item.getUsername().equalsIgnoreCase(username)).collect(Collectors.toList());
+            searchUserInfoResponse.setResults(searchUserInfoResponse.getResults().stream()
+                    .filter(item -> item.getUsername().equalsIgnoreCase(username)).collect(Collectors.toList()));
         }
         if (page != null && size != null) {
             List<SearchUserInfoGetObject> searchUserInfoGetObjectList = searchUserInfoResponse.getResults();
