@@ -9,7 +9,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 public interface UserService {
-    public SearchUserInfoResponse getUsers(String codiceFisccale, Integer page, Integer size) throws IOException, ParseException;
+    public SearchUserInfoResponse getUsers(String username, String codiceFisccale, Integer page, Integer size) throws IOException, ParseException;
     public void createUser(UserRegistrationObject userRegistrationObject) throws IOException, ParseException;
     public void updateUser(String username, UserInfoPutObject userInfoPutObject) throws IOException, ParseException;
 
