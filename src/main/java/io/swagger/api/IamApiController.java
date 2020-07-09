@@ -121,17 +121,13 @@ public class IamApiController implements IamApi {
     public ResponseEntity<Void> putUserInfo(@ApiParam(value = "Parametri necessari per l'aggiornamento dei dati utente", required = true) @Valid @RequestBody UserInfoPutObject body
             , @ApiParam(value = "", required = true) @PathVariable("username") String username
     ) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                userService.updateUser(username, body);
-                return new ResponseEntity<>(HttpStatus.OK);
-            } catch (IOException | ParseException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        try {
+            userService.updateUser(username, body);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException | ParseException e) {
+            log.error("Couldn't serialize response for content type application/json", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
